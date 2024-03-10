@@ -9,17 +9,22 @@ class Vendas extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'status_entrega', 'status_pagamento', 'cliente_id', 'produto_id', 'user_id'
+        'metodo_pagamento',
+        'status_entrega',
+        'status_pagamento',
+        'cliente_id',
+        'user_id',
+        'valor_total',
+        'parcelado'
     ];
-
     public function cliente()
     {
         return $this->belongsTo(Clientes::class);
     }
 
-    public function produto()
+    public function produtos()
     {
-        return $this->belongsTo(Produtos::class);
+        return $this->belongsToMany(Produtos::class, 'produtos_vendas', 'venda_id', 'produto_id');
     }
 
     public function user()

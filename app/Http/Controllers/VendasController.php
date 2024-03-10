@@ -26,7 +26,6 @@ class VendasController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
     public function index()
     {
         try {
@@ -40,10 +39,10 @@ class VendasController extends Controller
     {
         try {
             $venda = $this->vendaService->buscarVenda($id);
-    
+
             if ($venda) {
-                $venda->load('cliente', 'produto', 'user');
-    
+                $venda->load('cliente', 'user');
+
                 return response()->json($venda, 200);
             } else {
                 throw new \Exception('Venda não encontrada');
@@ -52,13 +51,13 @@ class VendasController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    public function update(Request $request, Vendas $venda)
+    public function update(Vendas $venda, Request $request)
     {
         try {
-            $venda = $this->vendaService->atualizarVenda($venda, $request->all());
-            return response()->json($venda, 200);
+            $this->vendaService->atualizarVenda($venda, $request->all());
+            return response()->json(['message' => 'Venda atualizada com sucesso',], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 }
